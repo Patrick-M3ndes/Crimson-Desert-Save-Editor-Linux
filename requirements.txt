@@ -1,0 +1,2 @@
+cryptography>=41.0.0
+lz4>=4.3.0
