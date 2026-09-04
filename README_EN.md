@@ -60,8 +60,8 @@ After making edits in the save editor:
 
 ```bash
 # 1. Clone repository
-git clone https://github.com/Patrick-M3ndes/Crimson-Desert-Save-Editor-Linux.git
-cd Crimson-Desert-Save-Editor-Linux
+git clone https://github.com/Patrick-M3ndes/Crimson-Desert-Save-Editor-Linux-Windows.git
+cd Crimson-Desert-Save-Editor-Linux-Windows
 
 # 2. Create and activate virtual environment
 python3 -m venv .venv
@@ -80,8 +80,8 @@ python main.py
 
 ```powershell
 # 1. Clone repository
-git clone https://github.com/Patrick-M3ndes/Crimson-Desert-Save-Editor-Linux.git
-cd Crimson-Desert-Save-Editor-Linux
+git clone https://github.com/Patrick-M3ndes/Crimson-Desert-Save-Editor-Linux-Windows.git
+cd Crimson-Desert-Save-Editor-Linux-Windows
 
 # 2. Create and activate virtual environment
 python -m venv .venv

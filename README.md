@@ -60,8 +60,8 @@ Após realizar qualquer alteração nos seus itens ou moedas através do editor:
 
 ```bash
 # 1. Clonar o repositório
-git clone https://github.com/Patrick-M3ndes/Crimson-Desert-Save-Editor-Linux.git
-cd Crimson-Desert-Save-Editor-Linux
+git clone https://github.com/Patrick-M3ndes/Crimson-Desert-Save-Editor-Linux-Windows.git
+cd Crimson-Desert-Save-Editor-Linux-Windows
 
 # 2. Criar e ativar o ambiente virtual
 python3 -m venv .venv
@@ -80,8 +80,8 @@ python main.py
 
 ```powershell
 # 1. Clonar o repositório
-git clone https://github.com/Patrick-M3ndes/Crimson-Desert-Save-Editor-Linux.git
-cd Crimson-Desert-Save-Editor-Linux
+git clone https://github.com/Patrick-M3ndes/Crimson-Desert-Save-Editor-Linux-Windows.git
+cd Crimson-Desert-Save-Editor-Linux-Windows
 
 # 2. Criar e ativar o ambiente virtual
 python -m venv .venv
