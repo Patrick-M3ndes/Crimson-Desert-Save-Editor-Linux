@@ -8,9 +8,125 @@ Editor de save leve, rápido e de alta precisão desenvolvido em Python para o j
 
 ---
 
-## 📌 Visão Geral
+## ⚡ Como Abrir e Executar o Editor (Modo Rápido / 1 Clique)
 
-Esta ferramenta foi desenvolvida para rodar diretamente via **terminal (Linux & Windows)**, permitindo visualizar, alterar recursos, modificar quantidades de itens, trocar itens por qualquer outro do banco de dados e gerenciar backups dos seus saves do Crimson Desert de forma simples, rápida e segura (totalmente compatível com a versão **2.01.00**).
+Para facilitar ao máximo a execução sem precisar digitar comandos no terminal:
+
+### 🐧 No Linux:
+- Abra o terminal na pasta do projeto e execute:
+  ```bash
+  ./run.sh
+  ```
+  *(Ou dê 2 cliques no arquivo `run.sh` no seu gerenciador de arquivos e selecione "Executar no Terminal").*
+
+### 🪟 No Windows:
+- Dê **2 cliques** no arquivo **`run.bat`** dentro da pasta do projeto. Ele fará tudo automaticamente e abrirá a tela do editor!
+
+---
+
+## 💻 Guia Completo por Terminal (Linux & Windows)
+
+Se preferir rodar manualmente digitando os comandos no seu terminal favorito:
+
+### 🐧 Linux (Variações de Terminal & Shell)
+
+#### 1. Bash / Zsh (Ubuntu, Debian, Fedora, Arch Linux, Pop!_OS, etc.)
+```bash
+# Entrar na pasta do projeto
+cd Crimson-Desert-Save-Editor-Linux-Windows
+
+# Criar e ativar o ambiente virtual
+python3 -m venv .venv
+source .venv/bin/activate
+
+# Instalar dependências e executar
+pip install -r requirements.txt
+python3 main.py
+```
+
+#### 2. Fish Shell
+```fish
+# Criar e ativar o ambiente virtual no Fish
+python3 -m venv .venv
+source .venv/bin/activate.fish
+
+# Instalar dependências e executar
+pip install -r requirements.txt
+python3 main.py
+```
+
+---
+
+### 🪟 Windows (Variações de Terminal)
+
+#### 1. PowerShell
+```powershell
+# Entrar na pasta do projeto
+cd Crimson-Desert-Save-Editor-Linux-Windows
+
+# Criar e ativar o ambiente virtual
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+
+# Instalar dependências e executar
+pip install -r requirements.txt
+python main.py
+```
+> 💡 *Dica*: Se o PowerShell exibir erro de execução de scripts, rode antes o comando: `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass`
+
+#### 2. Prompt de Comando (`cmd.exe`)
+```cmd
+# Entrar na pasta do projeto
+cd Crimson-Desert-Save-Editor-Linux-Windows
+
+# Criar e ativar o ambiente virtual
+python -m venv .venv
+.venv\Scripts\activate.bat
+
+# Instalar dependências e executar
+pip install -r requirements.txt
+python main.py
+```
+
+#### 3. Git Bash no Windows
+```bash
+# Criar e ativar o ambiente virtual no Git Bash
+python -m venv .venv
+source .venv/Scripts/activate
+
+# Instalar dependências e executar
+pip install -r requirements.txt
+python main.py
+```
+
+---
+
+## 🎮 Como Usar o Menu Interativo Passo a Passo
+
+Assim que você executar o script (`python main.py` ou via `run.sh` / `run.bat`), o menu interativo abrirá no seu terminal:
+
+```txt
+==================================================
+  CRIMSON DESERT - SAVE EDITOR (v2.01.00)
+==================================================
+ 1. Escolher Slot de Save
+ 2. 💰 Alterar Dinheiro & Recursos do Acampamento
+ 3. Ver Inventário Completo
+ 4. Buscar Item no Inventário Atual
+ 5. Pesquisar Itens no Banco Global
+ 6. Salvar Alterações
+ 7. Restaurar Backup
+ 0. Sair
+==================================================
+```
+
+### Guia Simples de Uso:
+
+1. **Digite `1` e aperte Enter**: O programa buscará automaticamente todos os saves no seu computador (Windows ou Linux) e mostrará os slots com data e hora. Selecione o número do slot que você deseja editar.
+2. **Digite `2` e aperte Enter**: Altere o valor de ouro/moedas do seu personagem e recursos do acampamento.
+3. **Digite `3` ou `4` e aperte Enter**: Navegue pelo seu inventário, escolha o item pelo número e altere sua quantidade (stack), nível de encantamento (`+0` a `+20`) ou troque-o por qualquer outro item do jogo.
+4. **Digite `6` e aperte Enter**: Salva todas as alterações no arquivo com segurança, recalculando o HMAC e removendo conflitos da nuvem.
+5. **Abra o Crimson Desert**: Carregue seu save editado no jogo e faça um novo salvamento in-game para que a Steam sincronize com a nuvem automaticamente.
 
 ---
 
@@ -43,85 +159,6 @@ Após realizar qualquer alteração nos seus itens ou moedas através do editor:
 1. Abra o jogo normalmente e carregue o seu save editado.
 2. Assim que o jogo carregar com os itens novos, faça um **novo salvamento (manual ou rápido)** dentro do próprio Crimson Desert.
 3. Ao salvar no jogo, a Steam gerará um novo arquivo `steam_autocloud.vdf` válido e **sincronizará suas alterações automaticamente com a nuvem Steam** de forma transparente.
-
----
-
-## 🛠️ Requisitos do Sistema
-
-- **Sistema Operacional**: Linux (Ubuntu, Debian, Fedora, Arch Linux, Pop!_OS, etc.) OU Windows 10/11.
-- **Python**: Versão 3.8 ou superior (`python --version` ou `python3 --version`).
-- **Git**: (Opcional, para clonar o repositório).
-
----
-
-## 🚀 Como Instalar e Rodar no Terminal
-
-### 🐧 No Linux (Terminal Bash)
-
-```bash
-# 1. Clonar o repositório
-git clone https://github.com/Patrick-M3ndes/Crimson-Desert-Save-Editor-Linux-Windows.git
-cd Crimson-Desert-Save-Editor-Linux-Windows
-
-# 2. Criar e ativar o ambiente virtual
-python3 -m venv .venv
-source .venv/bin/activate
-
-# 3. Instalar as dependências
-pip install -r requirements.txt
-
-# 4. Executar o Save Editor
-python main.py
-```
-
----
-
-### 🪟 No Windows (PowerShell / Prompt de Comando)
-
-```powershell
-# 1. Clonar o repositório
-git clone https://github.com/Patrick-M3ndes/Crimson-Desert-Save-Editor-Linux-Windows.git
-cd Crimson-Desert-Save-Editor-Linux-Windows
-
-# 2. Criar e ativar o ambiente virtual
-python -m venv .venv
-.venv\Scripts\activate
-
-# 3. Instalar as dependências
-pip install -r requirements.txt
-
-# 4. Executar o Save Editor
-python main.py
-```
-
-> 💡 **Nota**: Sempre que abrir uma nova janela de terminal para rodar o script, lembre-se de ativar o ambiente virtual (`source .venv/bin/activate` no Linux ou `.venv\Scripts\activate` no Windows).
-
----
-
-## 🎮 Como Usar o Menu Interativo
-
-Ao executar o `python main.py`, o editor exibirá um menu numérico no terminal:
-
-```txt
-==================================================
-  CRIMSON DESERT - SAVE EDITOR (v2.01.00)
-==================================================
- 1. Escolher Slot de Save
- 2. 💰 Alterar Dinheiro & Recursos do Acampamento
- 3. Ver Inventário Completo
- 4. Buscar Item no Inventário Atual
- 5. Pesquisar Itens no Banco Global
- 6. Salvar Alterações
- 7. Restaurar Backup
- 0. Sair
-==================================================
-```
-
----
-
-## 🛡️ Segurança e Backups
-
-O editor gera um arquivo de segurança com carimbo de data/hora (`save.save.YYYYMMDD_HHMMSS.bak`) na pasta do save antes de aplicar qualquer alteração. Caso deseje desfazer modificações, basta utilizar a **Opção 7 (Restaurar Backup)** diretamente no menu do terminal.
 
 ---
 
