@@ -24,6 +24,30 @@ from src.scanner import (
 from src.backup import create_backup, list_backups, restore_backup
 
 
+@dataclass
+class SlotInfo:
+    slot_id: str
+    save_path: str
+    mtime: float
+    mtime_str: str
+    size_bytes: int
+
+
+# ==============================================================================
+# CORREÇÃO: Variáveis globais necessárias que estavam ausentes
+# ==============================================================================
+STEAM_DEFAULT_SAVE_DIR = os.path.expanduser(
+    "~/.local/share/Steam/steamapps/compatdata/3321460/pfx/drive_c/users/steamuser/AppData/Local/Pearl Abyss/CD/save"
+)
+
+CURRENCY_KEYS = {
+    "Item_Money": "Dinheiro (Gold)",
+    "Item_CampFunds": "Fundos do Acampamento",
+    "Item_CampPoint": "Pontos do Acampamento",
+}
+# ==============================================================================
+
+
 def get_candidate_save_dirs() -> List[str]:
     """Retorna uma lista de possíveis diretórios de save para Linux e Windows."""
     dirs: List[str] = []
