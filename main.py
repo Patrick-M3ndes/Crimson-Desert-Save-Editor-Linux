@@ -24,28 +24,41 @@ from src.scanner import (
 from src.backup import create_backup, list_backups, restore_backup
 
 
-STEAM_DEFAULT_SAVE_DIR = os.path.expanduser(
-    "~/.local/share/Steam/steamapps/compatdata/3321460/pfx/drive_c/users/steamuser/AppData/Local/Pearl Abyss/CD/save/1223366488"
-)
+def get_candidate_save_dirs() -> List[str]:
+    """Retorna uma lista de possíveis diretórios de save para Linux e Windows."""
+    dirs: List[str] = []
 
-CURRENCY_KEYS = {
-    1: "Moedas do Jogador (Copper)",
-    11: "Fundos do Acampamento (Camp Funds)",
-    12: "Comida do Acampamento (Camp Food)",
-    13: "Madeira do Acampamento (Camp Timber)",
-    14: "Pedra do Acampamento (Camp Stone)",
-    15: "Armas do Acampamento (Camp Weapons)",
-    1000485: "Inseto Mecânico (Clockwork Insect)",
-}
+    # Windows: %LOCALAPPDATA%\Pearl Abyss\CD\save
+    local_appdata = os.environ.get("LOCALAPPDATA")
+    if local_appdata:
+        win_base = os.path.join(local_appdata, "Pearl Abyss", "CD", "save")
+        if os.path.exists(win_base):
+            for entry in os.listdir(win_base):
+                sub = os.path.join(win_base, entry)
+                if os.path.isdir(sub):
+                    dirs.append(sub)
 
+    # Linux (Steam/Proton): ~/.local/share/Steam/steamapps/compatdata/3321460/pfx/drive_c/users/steamuser/AppData/Local/Pearl Abyss/CD/save
+    linux_proton_base = os.path.expanduser(
+        "~/.local/share/Steam/steamapps/compatdata/3321460/pfx/drive_c/users/steamuser/AppData/Local/Pearl Abyss/CD/save"
+    )
+    if os.path.exists(linux_proton_base):
+        for entry in os.listdir(linux_proton_base):
+            sub = os.path.join(linux_proton_base, entry)
+            if os.path.isdir(sub):
+                dirs.append(sub)
 
-@dataclass
-class SlotInfo:
-    slot_id: str
-    save_path: str
-    mtime: float
-    mtime_str: str
-    size_bytes: int
+    # Pasta atual do projeto (fallback para testes locais)
+    dirs.append(os.getcwd())
+
+    # Retorna lista sem duplicatas preservando a ordem
+    seen = set()
+    res = []
+    for d in dirs:
+        if d not in seen:
+            seen.add(d)
+            res.append(d)
+    return res
 
 
 def get_slot_label(slot_id: str) -> str:
@@ -61,29 +74,32 @@ def get_slot_label(slot_id: str) -> str:
     return slot_map.get(slot_id, f"Slot {slot_id}")
 
 
-def detect_save_slots(base_dir: str = STEAM_DEFAULT_SAVE_DIR) -> List[SlotInfo]:
+def detect_save_slots(base_dir: Optional[str] = None) -> List[SlotInfo]:
     """Detecta todos os slots de save e ordena pelo mais recente."""
     slots: List[SlotInfo] = []
-    if not os.path.exists(base_dir):
-        return slots
+    candidate_dirs = [base_dir] if base_dir else get_candidate_save_dirs()
 
-    for entry in os.listdir(base_dir):
-        slot_dir = os.path.join(base_dir, entry)
-        if os.path.isdir(slot_dir):
-            save_path = os.path.join(slot_dir, "save.save")
-            if os.path.exists(save_path):
-                mtime = os.path.getmtime(save_path)
-                mtime_str = datetime.fromtimestamp(mtime).strftime("%d/%m/%Y às %H:%M:%S")
-                size = os.path.getsize(save_path)
-                slots.append(
-                    SlotInfo(
-                        slot_id=entry,
-                        save_path=save_path,
-                        mtime=mtime,
-                        mtime_str=mtime_str,
-                        size_bytes=size,
+    for target_dir in candidate_dirs:
+        if not target_dir or not os.path.exists(target_dir):
+            continue
+
+        for entry in os.listdir(target_dir):
+            slot_dir = os.path.join(target_dir, entry)
+            if os.path.isdir(slot_dir):
+                save_path = os.path.join(slot_dir, "save.save")
+                if os.path.exists(save_path):
+                    mtime = os.path.getmtime(save_path)
+                    mtime_str = datetime.fromtimestamp(mtime).strftime("%d/%m/%Y às %H:%M:%S")
+                    size = os.path.getsize(save_path)
+                    slots.append(
+                        SlotInfo(
+                            slot_id=entry,
+                            save_path=save_path,
+                            mtime=mtime,
+                            mtime_str=mtime_str,
+                            size_bytes=size,
+                        )
                     )
-                )
 
     # Ordena pelo arquivo mais recente primeiro
     slots.sort(key=lambda s: s.mtime, reverse=True)
@@ -93,9 +109,15 @@ def detect_save_slots(base_dir: str = STEAM_DEFAULT_SAVE_DIR) -> List[SlotInfo]:
 def cleanup_steam_autocloud(save_path: str) -> bool:
     """Remove o arquivo steam_autocloud.vdf para evitar travamento da Steam."""
     cleaned = False
+    if not save_path:
+        return False
+
+    parent = os.path.dirname(save_path)
+    grandparent = os.path.dirname(parent)
+
     possible_paths = [
-        os.path.join(os.path.dirname(os.path.dirname(save_path)), "steam_autocloud.vdf"),
-        os.path.join(STEAM_DEFAULT_SAVE_DIR, "steam_autocloud.vdf"),
+        os.path.join(parent, "steam_autocloud.vdf"),
+        os.path.join(grandparent, "steam_autocloud.vdf"),
     ]
 
     for vdf_path in set(possible_paths):

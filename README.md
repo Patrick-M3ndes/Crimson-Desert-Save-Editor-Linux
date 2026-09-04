@@ -1,6 +1,8 @@
-# ⚔️ Crimson Desert - Item & Currency Save Editor (Terminal Linux)
+# ⚔️ Crimson Desert - Item & Currency Save Editor (Linux & Windows)
 
-Editor de save leve, rápido e de alta precisão desenvolvido em Python para o jogo **Crimson Desert** no **Linux**.
+[🇧🇷 Versão em Português](README.md) | [🇺🇸 English Version](README_EN.md)
+
+Editor de save leve, rápido e de alta precisão desenvolvido em Python para o jogo **Crimson Desert** no **Linux e Windows**.
 
 > 🟢 **Status**: Testado e **funcionando perfeitamente** na versão **2.01.00** do jogo!
 
@@ -8,19 +10,19 @@ Editor de save leve, rápido e de alta precisão desenvolvido em Python para o j
 
 ## 📌 Visão Geral
 
-Esta ferramenta foi desenvolvida para rodar diretamente via **terminal no Linux**, permitindo visualizar, alterar recursos, modificar quantidades de itens, trocar itens por qualquer outro do banco de dados e gerenciar backups dos seus saves do Crimson Desert de forma simples, rápida e segura (totalmente compatível com a versão **2.01.00**).
+Esta ferramenta foi desenvolvida para rodar diretamente via **terminal (Linux & Windows)**, permitindo visualizar, alterar recursos, modificar quantidades de itens, trocar itens por qualquer outro do banco de dados e gerenciar backups dos seus saves do Crimson Desert de forma simples, rápida e segura (totalmente compatível com a versão **2.01.00**).
 
 ---
 
 ## ✨ Funcionalidades Principais
 
-- **Detecta Automaticamente os Saves no Linux**: Identifica os arquivos de save localizados no diretório padrão do Steam/Proton (`~/.local/share/Steam/...`).
+- **Detecta Automaticamente os Saves (Multiplataforma)**: Identifica os arquivos de save localizados no diretório padrão do **Linux** (`~/.local/share/Steam/...`) e do **Windows** (`%LOCALAPPDATA%\Pearl Abyss\CD\save`).
 - **Identificação de Slots com Data e Horário**: Exibe a data e hora exatas da última modificação de cada slot (ex: `26/08/2026 às 14:59:02`).
 - **💰 Edição de Moedas & Recursos do Acampamento**: Altere o saldo de moedas do jogador (`Copper`) e todos os fundos/recursos do acampamento (`Camp Funds`, `Food`, `Timber`, `Stone`, `Weapons`).
 - **Banco de Dados Global com +6.200 Itens**: Tabela catalogada com mais de 6.200 itens para substituição e pesquisa.
 - **Navegador e Pesquisa de Inventário**: Paginação interativa para navegar pelo inventário do seu personagem ou pesquisar itens específicos por nome.
 - **Edição de Quantidade (Stack Count)**: Altere o tamanho da pilha de qualquer item consumível ou material.
-- **Encantamento e Durabilidade**: Modifique nível de encanto (arma/armadura), durabilidade e nitidez.
+- **Encantamento e Durabilidade**: Modifique nível de encanto (arma/armadura de `+0` a `+20`), durabilidade e nitidez.
 - **Substituição / Troca de Itens**: Transforme qualquer item existente no seu inventário em qualquer outro item do jogo buscando por nome ou ID.
 - **Proteção Anti-Corrupção (HMAC Recalculado)**: Recalcula automaticamente a assinatura de integridade do arquivo para que o jogo não aponte o save como corrompido.
 - **Proteção Anti-Crash / Conflito Steam Cloud (`steam_autocloud.vdf`)**: Remove automaticamente os metadados antigos para evitar que o Steam Cloud sobrescreva suas edições ou trave o jogo no menu inicial.
@@ -46,40 +48,53 @@ Após realizar qualquer alteração nos seus itens ou moedas através do editor:
 
 ## 🛠️ Requisitos do Sistema
 
-- **Sistema Operacional**: Linux (Ubuntu, Debian, Fedora, Arch Linux, Pop!_OS, etc.)
-- **Python**: Versão 3.8 ou superior (`python3 --version`)
-- **Git**: (Opcional, para clonar o repositório)
+- **Sistema Operacional**: Linux (Ubuntu, Debian, Fedora, Arch Linux, Pop!_OS, etc.) OU Windows 10/11.
+- **Python**: Versão 3.8 ou superior (`python --version` ou `python3 --version`).
+- **Git**: (Opcional, para clonar o repositório).
 
 ---
 
-## 🚀 Como Instalar e Rodar no Terminal (Linux)
+## 🚀 Como Instalar e Rodar no Terminal
 
-Siga o passo a passo abaixo no seu terminal Linux:
+### 🐧 No Linux (Terminal Bash)
 
-### 1. Clonar ou Baixar o Repositório
 ```bash
-git clone https://github.com/Patrick-M3ndes/CD_Save_Editor.git
-cd CD_Save_Editor
-```
-*(Caso já tenha o repositório em sua máquina, basta abrir o terminal na pasta raiz do projeto).*
+# 1. Clonar o repositório
+git clone https://github.com/Patrick-M3ndes/Crimson-Desert-Save-Editor-Linux.git
+cd Crimson-Desert-Save-Editor-Linux
 
-### 2. Criar e Ativar o Ambiente Virtual (Venv)
-```bash
+# 2. Criar e ativar o ambiente virtual
 python3 -m venv .venv
 source .venv/bin/activate
-```
 
-### 3. Instalar as Dependências
-```bash
+# 3. Instalar as dependências
 pip install -r requirements.txt
-```
 
-### 4. Executar o Save Editor
-```bash
+# 4. Executar o Save Editor
 python main.py
 ```
 
-> 💡 **Nota**: Sempre que abrir uma nova janela de terminal para rodar o script, lembre-se de ativar o ambiente virtual executando `source .venv/bin/activate`.
+---
+
+### 🪟 No Windows (PowerShell / Prompt de Comando)
+
+```powershell
+# 1. Clonar o repositório
+git clone https://github.com/Patrick-M3ndes/Crimson-Desert-Save-Editor-Linux.git
+cd Crimson-Desert-Save-Editor-Linux
+
+# 2. Criar e ativar o ambiente virtual
+python -m venv .venv
+.venv\Scripts\activate
+
+# 3. Instalar as dependências
+pip install -r requirements.txt
+
+# 4. Executar o Save Editor
+python main.py
+```
+
+> 💡 **Nota**: Sempre que abrir uma nova janela de terminal para rodar o script, lembre-se de ativar o ambiente virtual (`source .venv/bin/activate` no Linux ou `.venv\Scripts\activate` no Windows).
 
 ---
 
@@ -102,15 +117,6 @@ Ao executar o `python main.py`, o editor exibirá um menu numérico no terminal:
 ==================================================
 ```
 
-### Passo a Passo Recomendado:
-
-1. **Selecione o Slot (Opção `1`)**: Escolha qual slot de save deseja carregar (o editor mostra a data e hora exatas de modificação do save).
-2. **Edite seus Dados**:
-   - **Opção `2`**: Altere moedas do jogador e fundos do acampamento.
-   - **Opção `3` ou `4`**: Navegue pelo inventário, selecione um item pelo número e altere sua quantidade, nível de encantamento ou troque-o por outro item do jogo.
-3. **Salve as Alterações (Opção `6`)**: O script reciclará o HMAC, gerará um backup `.bak` automático e atualizará o arquivo com segurança.
-4. **Abra o Jogo e Salve**: Abra o Crimson Desert, verifique suas alterações e faça um save pelo próprio menu do jogo para sincronizar com a nuvem Steam.
-
 ---
 
 ## 🛡️ Segurança e Backups
@@ -121,4 +127,4 @@ O editor gera um arquivo de segurança com carimbo de data/hora (`save.save.YYYY
 
 ## 📄 Licença
 
-Este projeto é disponibilizado para fins educacionais e de entretenimento.
+Este projeto é disponibilizado sob a Licença MIT para fins educacionais e de entretenimento.
