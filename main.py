@@ -21,7 +21,7 @@ from src.scanner import (
     search_database_items,
     Item,
 )
-from src.backup import create_backup
+from src.backup import create_backup, list_backups, restore_backup
 
 
 STEAM_DEFAULT_SAVE_DIR = os.path.expanduser(
@@ -303,7 +303,7 @@ class SaveEditorCLI:
         self.item_action_menu(selected_item)
 
     def item_action_menu(self, item: Item):
-        """Menu de ações para um item específico: Quantidade, Encantamento, Reparo ou Troca."""
+        """Menu de ações para um item específico."""
         while True:
             enchant_str = f" (+{item.enchant_level})" if item.enchant_level > 0 else " (+0)"
             print("\n" + "=" * 60)
@@ -311,6 +311,7 @@ class SaveEditorCLI:
             print(f"     • Categoria: {item.category}")
             print(f"     • Slot no Inventário: {item.slot_no}")
             print(f"     • Quantidade Atual: {item.stack_count:,}")
+            print(f"     • Preço Médio / Dinheiro (Average Price): {item.average_price:,}")
             print(f"     • Nível de Encanto: {enchant_str}")
             print(f"     • Durabilidade (Endurance): {item.endurance}")
             print(f"     • Afiação (Sharpness): {item.sharpness}")
@@ -462,6 +463,50 @@ class SaveEditorCLI:
         except Exception as e:
             print(f"❌ Erro ao salvar arquivo: {e}")
 
+    def restore_backup_dialog(self):
+        """Lista os backups disponíveis para o slot atual e permite restaurar com 1 clique."""
+        if not self.save_file:
+            print("⚠️ Nenhum save carregado. Selecione um slot primeiro.")
+            return
+
+        save_path = self.save_file.file_path
+        backups = list_backups(save_path)
+        if not backups:
+            print(f"❌ Nenhum backup encontrado na pasta 'backups' deste slot.")
+            return
+
+        print("\n🛡️ BACKUPS DISPONÍVEIS PARA RESTAURAÇÃO:")
+        print("-" * 70)
+        for idx, b in enumerate(backups, 1):
+            rec = " ⭐ [Mais Recente]" if idx == 1 else ""
+            size_kb = b["size_bytes"] / 1024
+            print(f"  [{idx:2}] {b['mtime_str']} ({size_kb:.1f} KB){rec}")
+            print(f"       Arquivo: {b['filename']}")
+        print("-" * 70)
+
+        choice = input(f"\nEscolha o backup para restaurar (1 a {len(backups)} ou 0 para cancelar): ").strip()
+        if not choice.isdigit() or int(choice) == 0:
+            return
+
+        idx = int(choice)
+        if not (1 <= idx <= len(backups)):
+            print("❌ Opção inválida.")
+            return
+
+        selected_backup = backups[idx - 1]
+        confirm = input(f"⚠️ ATENÇÃO: Confirma restaurar o backup de '{selected_backup['mtime_str']}'? O save atual será substituído. (s/N): ").strip().lower()
+        if confirm != "s":
+            print("Restauração cancelada.")
+            return
+
+        try:
+            restore_backup(selected_backup["path"], save_path)
+            print(f"✅ Backup de {selected_backup['mtime_str']} restaurado com sucesso!")
+            print("⏳ Recarregando save na memória...")
+            self.load_save(save_path, self.current_slot_id)
+        except Exception as e:
+            print(f"❌ Erro ao restaurar backup: {e}")
+
     def run(self):
         """Loop principal do editor."""
         self.print_banner()
@@ -495,7 +540,8 @@ class SaveEditorCLI:
             print("4. Buscar Item no Inventário Atual (ex: Abyss Artifact)")
             print("5. Pesquisar Banco de Dados Global (6.200+ itens)")
             print("6. Salvar alterações no save (com backup e anti-crash)")
-            print("7. Limpar manualmente 'steam_autocloud.vdf'")
+            print("7. 🛡️ Restaurar Backup / Recuperar Save")
+            print("8. Limpar manualmente 'steam_autocloud.vdf'")
             print("0. Sair")
 
             choice = input("\nEscolha uma opção: ").strip()
@@ -513,6 +559,8 @@ class SaveEditorCLI:
             elif choice == "6":
                 self.save_changes()
             elif choice == "7":
+                self.restore_backup_dialog()
+            elif choice == "8":
                 save_path = self.save_file.file_path if self.save_file else STEAM_DEFAULT_SAVE_DIR
                 if cleanup_steam_autocloud(save_path):
                     print("✨ 'steam_autocloud.vdf' removido com sucesso!")
@@ -527,7 +575,6 @@ class SaveEditorCLI:
                 break
             else:
                 print("❌ Opção inválida. Tente novamente.")
-
 
 if __name__ == "__main__":
     app = SaveEditorCLI()

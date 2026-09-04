@@ -16,7 +16,11 @@ from src.backup import create_backup
 
 
 def test_full_pipeline():
-    saves = glob.glob("/home/patrik/Downloads/CrimsonDesertSaveEditor/backups/slot101/*.bak")
+    saves = glob.glob("/home/patrik/.local/share/Steam/steamapps/compatdata/3321460/pfx/drive_c/users/steamuser/AppData/Local/Pearl Abyss/CD/save/1223366488/slot0/save.save")
+    if not saves:
+        saves = glob.glob("/home/patrik/SAVE DE TESTE ATOMIC/slot0/save.save")
+    if not saves:
+        saves = glob.glob("/home/patrik/Downloads/CrimsonDesertSaveEditor/backups/slot101/*.bak")
     if not saves:
         saves = glob.glob("/home/patrik/Games/save/**/save.save", recursive=True)
 
